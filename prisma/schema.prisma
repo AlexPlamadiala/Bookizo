@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -53,12 +53,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?
-  access_token      String?
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?
+  id_token          String? @db.Text
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -86,13 +86,13 @@ model Salon {
   id          String   @id @default(cuid())
   name        String
   slug        String   @unique
-  description String?
+  description String?   @db.Text
   address     String
   city        String
   phone       String?
   email       String?
   type        SalonType @default(UNISEX)
-  image       String?
+  image       String?   @db.Text
   rating      Float     @default(0)
   reviewCount Int       @default(0)
   isActive    Boolean   @default(true)
@@ -113,9 +113,9 @@ model Specialist {
   name           String
   email          String?
   phone          String?
-  image          String?
+  image          String?  @db.Text
   specialization String?
-  bio            String?
+  bio            String?  @db.Text
   isActive       Boolean @default(true)
   salonId        String
 
@@ -131,7 +131,7 @@ model Specialist {
 model Service {
   id          String @id @default(cuid())
   name        String
-  description String?
+  description String? @db.Text
   price       Float
   duration    Int    // duration in minutes
   salonId     String
@@ -154,7 +154,7 @@ model Booking {
   customerName String
   customerEmail String
   customerPhone String
-  notes        String?
+  notes        String?       @db.Text
 
   salonId      String
   specialistId String
@@ -200,7 +200,7 @@ model SalonImage {
 model Review {
   id      String @id @default(cuid())
   rating  Int    // 1-5
-  comment String?
+  comment String? @db.Text
   author  String
   salonId String
 

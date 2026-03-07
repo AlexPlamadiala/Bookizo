@@ -18,9 +18,9 @@ async function getSalons(search?: string) {
       ...(search
         ? {
             OR: [
-              { name: { contains: search, mode: "insensitive" as const } },
-              { city: { contains: search, mode: "insensitive" as const } },
-              { address: { contains: search, mode: "insensitive" as const } },
+              { name: { contains: search } },
+              { city: { contains: search } },
+              { address: { contains: search } },
             ],
           }
         : {}),
