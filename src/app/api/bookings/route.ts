@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { bookingSchema } from "@/lib/validations";
 import { addMinutesToTime } from "@/lib/booking";
 import { getAvailableSlots } from "@/lib/booking";
+import { auth } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,6 +42,10 @@ export async function POST(request: NextRequest) {
 
     const endTime = addMinutesToTime(time, service.duration);
 
+    // Link booking to logged-in user if available
+    const session = await auth();
+    const userId = session?.user?.id as string | undefined;
+
     const booking = await prisma.booking.create({
       data: {
         salonId,
@@ -53,9 +58,27 @@ export async function POST(request: NextRequest) {
         customerEmail,
         customerPhone,
         notes: notes || null,
-        status: "CONFIRMED",
+        status: "PENDING",
+        userId: userId || null,
       },
     });
+
+    // Create notification for salon admin(s) about new booking
+    const salonAdmins = await prisma.user.findMany({
+      where: { salonId, role: "SALON_ADMIN" },
+    });
+
+    if (salonAdmins.length > 0) {
+      await prisma.notification.createMany({
+        data: salonAdmins.map((admin) => ({
+          userId: admin.id,
+          bookingId: booking.id,
+          type: "BOOKING_CREATED" as const,
+          title: "Programare nouă",
+          message: `${customerName} dorește o programare pe ${date} la ora ${time}.`,
+        })),
+      });
+    }
 
     return NextResponse.json({ booking }, { status: 201 });
   } catch (error) {

@@ -19,6 +19,7 @@ export function Footer() {
             <h3 className="text-sm font-semibold text-neutral-900">Platformă</h3>
             <ul className="mt-3 space-y-2">
               <li><Link href="/salons" className="text-sm text-neutral-500 hover:text-neutral-700">Saloane</Link></li>
+              <li><Link href="/search" className="text-sm text-neutral-500 hover:text-neutral-700">Caută disponibilitate</Link></li>
               <li><Link href="/register" className="text-sm text-neutral-500 hover:text-neutral-700">Înregistrare</Link></li>
             </ul>
           </div>

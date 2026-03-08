@@ -145,14 +145,15 @@ export function BookingWizard({
     return (
       <Card>
         <CardContent className="py-16 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-            <Check className="h-8 w-8 text-green-600" />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-100">
+            <Clock className="h-8 w-8 text-amber-600" />
           </div>
           <h2 className="mt-4 text-xl font-semibold text-neutral-900">
-            Programare confirmată!
+            Programare trimisă!
           </h2>
           <p className="mt-2 text-neutral-500">
-            Programarea ta la {salon.name} cu {specialist?.name} a fost creată cu succes.
+            Programarea ta la {salon.name} cu {specialist?.name} a fost trimisă și așteaptă confirmarea salonului.
+            Vei primi o notificare când este confirmată.
           </p>
           <div className="mt-4 inline-flex items-center gap-4 rounded-lg bg-neutral-50 px-6 py-3 text-sm">
             <span><strong>{selectedDate}</strong></span>

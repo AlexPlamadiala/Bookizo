@@ -27,6 +27,14 @@ enum SalonType {
   UNISEX
 }
 
+enum NotificationType {
+  BOOKING_CREATED
+  BOOKING_CONFIRMED
+  BOOKING_CANCELLED
+  BOOKING_COMPLETED
+  BOOKING_REMINDER
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -38,10 +46,11 @@ model User {
   role          UserRole  @default(CUSTOMER)
   salonId       String?
 
-  salon    Salon?    @relation("SalonAdmin", fields: [salonId], references: [id])
-  bookings Booking[]
-  accounts Account[]
-  sessions Session[]
+  salon         Salon?         @relation("SalonAdmin", fields: [salonId], references: [id])
+  bookings      Booking[]
+  accounts      Account[]
+  sessions      Session[]
+  notifications Notification[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -161,10 +170,11 @@ model Booking {
   serviceId    String
   userId       String?
 
-  salon      Salon      @relation(fields: [salonId], references: [id], onDelete: Cascade)
-  specialist Specialist @relation(fields: [specialistId], references: [id], onDelete: Cascade)
-  service    Service    @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-  user       User?      @relation(fields: [userId], references: [id])
+  salon         Salon          @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  specialist    Specialist     @relation(fields: [specialistId], references: [id], onDelete: Cascade)
+  service       Service        @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  user          User?          @relation(fields: [userId], references: [id])
+  notifications Notification[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -207,4 +217,21 @@ model Review {
   salon Salon @relation(fields: [salonId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  type      NotificationType
+  title     String
+  message   String           @db.Text
+  isRead    Boolean          @default(false)
+  userId    String
+  bookingId String?
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  booking Booking? @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, isRead])
 }

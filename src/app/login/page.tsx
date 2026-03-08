@@ -93,9 +93,10 @@ export default function LoginPage() {
             </Link>
           </p>
           <div className="mt-4 rounded-lg bg-neutral-50 p-3 text-xs text-neutral-500">
-            <p className="font-medium mb-1">Conturi demo:</p>
-            <p>Admin: admin@bookizo.ro / admin123</p>
-            <p>Client: client@bookizo.ro / client123</p>
+            <p className="font-medium mb-1">Conturi demo (parolă: password123):</p>
+            <p>Super Admin: superadmin@bookizo.ro</p>
+            <p>Partener: admin@bookizo.ro</p>
+            <p>Client: client@bookizo.ro</p>
           </div>
         </CardContent>
       </Card>

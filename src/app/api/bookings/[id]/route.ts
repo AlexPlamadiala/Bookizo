@@ -22,7 +22,40 @@ export async function PATCH(
   const booking = await prisma.booking.update({
     where: { id },
     data: { status },
+    include: { service: true, specialist: true, salon: true },
   });
+
+  // Notify the customer if they have an account
+  if (booking.userId) {
+    const notifMap: Record<string, { type: "BOOKING_CONFIRMED" | "BOOKING_CANCELLED" | "BOOKING_COMPLETED"; title: string; message: string }> = {
+      CONFIRMED: {
+        type: "BOOKING_CONFIRMED",
+        title: "Programare confirmată",
+        message: `Programarea ta la ${booking.salon.name} pe ${booking.date.toLocaleDateString("ro-RO")} la ${booking.startTime} a fost confirmată.`,
+      },
+      CANCELLED: {
+        type: "BOOKING_CANCELLED",
+        title: "Programare anulată",
+        message: `Programarea ta la ${booking.salon.name} pe ${booking.date.toLocaleDateString("ro-RO")} la ${booking.startTime} a fost anulată.`,
+      },
+      COMPLETED: {
+        type: "BOOKING_COMPLETED",
+        title: "Programare finalizată",
+        message: `Programarea ta la ${booking.salon.name} a fost finalizată. Mulțumim!`,
+      },
+    };
+
+    const notif = notifMap[status];
+    if (notif) {
+      await prisma.notification.create({
+        data: {
+          userId: booking.userId,
+          bookingId: booking.id,
+          ...notif,
+        },
+      });
+    }
+  }
 
   return NextResponse.json({ booking });
 }

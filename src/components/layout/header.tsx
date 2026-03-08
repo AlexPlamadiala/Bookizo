@@ -5,6 +5,7 @@ import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Scissors } from "lucide-react";
 import { useState } from "react";
+import { NotificationBell } from "./notification-bell";
 
 export function Header() {
   const { data: session } = useSession();
@@ -34,6 +35,10 @@ export function Header() {
           )}
           {session ? (
             <div className="flex items-center gap-3">
+              <NotificationBell />
+              <Link href="/my-bookings" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">
+                Programările mele
+              </Link>
               <span className="text-sm text-neutral-500">{session.user?.name || session.user?.email}</span>
               <Button variant="outline" size="sm" onClick={() => signOut()}>
                 Deconectare

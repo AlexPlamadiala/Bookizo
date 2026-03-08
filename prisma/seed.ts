@@ -7,6 +7,7 @@ async function main() {
   console.log("🌱 Seeding database...");
 
   // Clean existing data
+  await prisma.notification.deleteMany();
   await prisma.booking.deleteMany();
   await prisma.workingHours.deleteMany();
   await prisma.review.deleteMany();
@@ -231,48 +232,57 @@ async function main() {
 
   console.log(`✅ Created ${createdSpecialists.length} specialists with working hours`);
 
-  // Create users
-  const hashedAdmin = await bcrypt.hash("admin123", 10);
-  const hashedClient = await bcrypt.hash("client123", 10);
+  // Create users - all 3 types
+  const hashedPassword = await bcrypt.hash("password123", 10);
 
-  const adminUser = await prisma.user.create({
+  // 1. SUPER_ADMIN - administrează întreaga platformă
+  await prisma.user.create({
     data: {
-      name: "Admin Bookizo",
+      name: "Super Admin",
+      email: "superadmin@bookizo.ro",
+      password: hashedPassword,
+      role: "SUPER_ADMIN",
+    },
+  });
+
+  // 2. SALON_ADMIN (Parteneri) - proprietari de saloane
+  await prisma.user.create({
+    data: {
+      name: "Admin Elite Barber",
       email: "admin@bookizo.ro",
-      password: hashedAdmin,
+      password: hashedPassword,
       role: "SALON_ADMIN",
       salonId: salons[0].id,
     },
   });
 
-  const clientUser = await prisma.user.create({
-    data: {
-      name: "Ion Popescu",
-      email: "client@bookizo.ro",
-      password: hashedClient,
-      role: "CUSTOMER",
-    },
-  });
-
-  // Create admin for second salon
   await prisma.user.create({
     data: {
       name: "Admin Glamour",
       email: "admin@glamour.ro",
-      password: hashedAdmin,
+      password: hashedPassword,
       role: "SALON_ADMIN",
       salonId: salons[1].id,
     },
   });
 
-  // Create admin for third salon
   await prisma.user.create({
     data: {
       name: "Admin Fresh Cuts",
       email: "admin@freshcuts.ro",
-      password: hashedAdmin,
+      password: hashedPassword,
       role: "SALON_ADMIN",
       salonId: salons[2].id,
+    },
+  });
+
+  // 3. CUSTOMER - utilizator normal cu cont
+  const clientUser = await prisma.user.create({
+    data: {
+      name: "Ion Popescu",
+      email: "client@bookizo.ro",
+      password: hashedPassword,
+      role: "CUSTOMER",
     },
   });
 
@@ -370,6 +380,20 @@ async function main() {
       specialistId: createdSpecialists[7].id,
       serviceId: allServices[salons[2].id][0].id,
     },
+    // Programare a clientului demo (Ion Popescu)
+    {
+      date: tomorrow,
+      startTime: "11:00",
+      endTime: "11:30",
+      customerName: "Ion Popescu",
+      customerEmail: "client@bookizo.ro",
+      customerPhone: "0788 000 000",
+      status: "PENDING" as const,
+      salonId: salons[0].id,
+      specialistId: createdSpecialists[1].id,
+      serviceId: allServices[salons[0].id][0].id,
+      userId: clientUser.id,
+    },
   ];
 
   await prisma.booking.createMany({ data: bookingsToCreate });
@@ -390,11 +414,12 @@ async function main() {
   console.log(`✅ Created ${reviewsData.length} reviews`);
 
   console.log("\n🎉 Seeding completed successfully!");
-  console.log("\n📋 Demo accounts:");
-  console.log("   Admin: admin@bookizo.ro / admin123 (Elite Barber Studio)");
-  console.log("   Admin: admin@glamour.ro / admin123 (Glamour Hair & Beauty)");
-  console.log("   Admin: admin@freshcuts.ro / admin123 (Fresh Cuts Unisex)");
-  console.log("   Client: client@bookizo.ro / client123");
+  console.log("\n📋 Demo accounts (parolă: password123 pentru toate):");
+  console.log("   🔑 Super Admin: superadmin@bookizo.ro");
+  console.log("   🏪 Partener:    admin@bookizo.ro (Elite Barber Studio)");
+  console.log("   🏪 Partener:    admin@glamour.ro (Glamour Hair & Beauty)");
+  console.log("   🏪 Partener:    admin@freshcuts.ro (Fresh Cuts Unisex)");
+  console.log("   👤 Client:      client@bookizo.ro");
 }
 
 main()
