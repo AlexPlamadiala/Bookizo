@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SpecialistForm } from "./specialist-form";
+import { WorkingHoursEditor } from "@/components/dashboard/working-hours-editor";
 
 const dayNames = ["Dum", "Lun", "Mar", "Mie", "Joi", "Vin", "Sâm"];
 
@@ -30,7 +31,7 @@ export default async function SpecialistsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-neutral-900">Specialiști</h1>
-          <p className="mt-1 text-neutral-500">Gestionează echipa salonului.</p>
+          <p className="mt-1 text-neutral-500">Gestionează echipa și programul de lucru.</p>
         </div>
       </div>
 
@@ -38,9 +39,10 @@ export default async function SpecialistsPage() {
         <SpecialistForm salonId={salonId} services={services} />
       </div>
 
-      <div className="mt-6 space-y-4">
+      <div className="mt-6 space-y-6">
         {specialists.map((spec) => (
-          <Card key={spec.id}>
+          <div key={spec.id} className="space-y-3">
+          <Card>
             <CardContent className="p-5">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-4">
@@ -86,6 +88,17 @@ export default async function SpecialistsPage() {
               </div>
             </CardContent>
           </Card>
+          <WorkingHoursEditor
+            specialistId={spec.id}
+            specialistName={spec.name}
+            initialHours={spec.workingHours.map((wh) => ({
+              dayOfWeek: wh.dayOfWeek,
+              startTime: wh.startTime,
+              endTime: wh.endTime,
+              isWorking: wh.isWorking,
+            }))}
+          />
+          </div>
         ))}
         {specialists.length === 0 && (
           <p className="text-sm text-neutral-500">Nu sunt specialiști adăugați.</p>

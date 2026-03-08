@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
 import { BookingActions } from "./booking-actions";
+import { BookingsCalendar } from "@/components/dashboard/bookings-calendar";
 
 const statusLabels: Record<string, string> = {
   PENDING: "În așteptare",
@@ -36,7 +37,25 @@ export default async function BookingsPage() {
       <h1 className="text-2xl font-bold text-neutral-900">Programări</h1>
       <p className="mt-1 text-neutral-500">Gestionează programările salonului.</p>
 
-      <Card className="mt-6">
+      {/* Calendar View */}
+      <div className="mt-6">
+        <BookingsCalendar
+          bookings={bookings.map((b) => ({
+            id: b.id,
+            date: b.date.toISOString(),
+            startTime: b.startTime,
+            endTime: b.endTime,
+            status: b.status,
+            customerName: b.customerName,
+            specialistName: b.specialist.name,
+            serviceName: b.service.name,
+          }))}
+        />
+      </div>
+
+      {/* Table View */}
+      <h2 className="mt-8 text-lg font-semibold text-neutral-900">Toate programările</h2>
+      <Card className="mt-3">
         <CardContent className="p-0">
           {bookings.length > 0 ? (
             <div className="overflow-x-auto">

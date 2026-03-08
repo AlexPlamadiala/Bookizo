@@ -45,11 +45,17 @@ export default async function HomePage() {
               Găsește cele mai bune frizerii, saloane de beauty și coafori din orașul tău.
               Programare simplă, rapidă, online.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-4">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Link href="/salons">
                 <Button size="lg" className="bg-white text-neutral-900 hover:bg-neutral-100">
                   Explorează saloane
                   <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link href="/search">
+                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10">
+                  <Search className="mr-2 h-4 w-4" />
+                  Caută după disponibilitate
                 </Button>
               </Link>
             </div>

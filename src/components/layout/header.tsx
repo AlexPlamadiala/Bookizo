@@ -24,6 +24,9 @@ export function Header() {
           <Link href="/salons" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">
             Saloane
           </Link>
+          <Link href="/search" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">
+            Caută disponibilitate
+          </Link>
           {isAdmin && (
             <Link href="/dashboard" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">
               Dashboard
@@ -58,6 +61,9 @@ export function Header() {
           <nav className="flex flex-col gap-3">
             <Link href="/salons" className="text-sm font-medium text-neutral-600" onClick={() => setMobileOpen(false)}>
               Saloane
+            </Link>
+            <Link href="/search" className="text-sm font-medium text-neutral-600" onClick={() => setMobileOpen(false)}>
+              Caută disponibilitate
             </Link>
             {isAdmin && (
               <Link href="/dashboard" className="text-sm font-medium text-neutral-600" onClick={() => setMobileOpen(false)}>
