@@ -56,7 +56,7 @@ export default async function SalonsPage({
             name="q"
             defaultValue={params.q}
             placeholder="Caută după nume, oraș sau adresă..."
-            className="w-full rounded-xl border border-neutral-200 bg-white py-3 pl-11 pr-4 text-sm text-neutral-900 placeholder:text-neutral-400 shadow-sm transition-all focus:border-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900/5"
+            className="w-full rounded-xl border border-neutral-200 bg-white py-3 pl-11 pr-4 text-sm text-neutral-900 placeholder:text-neutral-400 shadow-sm transition-all focus:border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-600/10"
           />
         </div>
       </form>
@@ -66,12 +66,12 @@ export default async function SalonsPage({
           {salons.map((salon) => (
             <Link key={salon.id} href={`/salons/${salon.slug}`}>
               <Card className="group h-full cursor-pointer overflow-hidden hover:shadow-lg hover:border-neutral-300/80">
-                <div className="aspect-[16/9] bg-gradient-to-br from-neutral-100 to-neutral-50 relative overflow-hidden">
+                <div className="aspect-[16/9] bg-gradient-to-br from-amber-50 to-orange-50 relative overflow-hidden">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Scissors className="h-10 w-10 text-neutral-200 transition-all duration-300 group-hover:scale-110 group-hover:text-neutral-300" />
+                    <Scissors className="h-10 w-10 text-amber-200 transition-all duration-300 group-hover:scale-110 group-hover:text-amber-300" />
                   </div>
                   <div className="absolute top-3 left-3">
-                    <Badge variant="outline" className="border-neutral-200/80 bg-white/95 text-xs font-medium text-neutral-600 backdrop-blur-sm">
+                    <Badge variant="outline" className="border-amber-200/80 bg-white/95 text-xs font-medium text-neutral-600 backdrop-blur-sm">
                       {salonTypeLabels[salon.type]}
                     </Badge>
                   </div>
@@ -85,7 +85,7 @@ export default async function SalonsPage({
                   )}
                 </div>
                 <CardContent className="p-5">
-                  <h3 className="text-base font-semibold text-neutral-900 transition-colors duration-200 group-hover:text-neutral-700">
+                  <h3 className="text-base font-semibold text-neutral-900 transition-colors duration-200 group-hover:text-amber-700">
                     {salon.name}
                   </h3>
                   {salon.description && (
@@ -121,8 +121,8 @@ export default async function SalonsPage({
         </div>
       ) : (
         <div className="py-20 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-neutral-100">
-            <Scissors className="h-8 w-8 text-neutral-300" />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-50">
+            <Scissors className="h-8 w-8 text-amber-300" />
           </div>
           <h3 className="mt-4 text-lg font-medium text-neutral-900">Niciun salon găsit</h3>
           <p className="mt-1.5 text-sm text-neutral-500">
