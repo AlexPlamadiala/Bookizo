@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatPrice, formatDuration } from "@/lib/utils";
 import {
-  MapPin, Phone, Mail, Star, Clock, Users, Scissors, Calendar,
+  MapPin, Phone, Mail, Star, Clock, Users, Scissors, Calendar, ArrowRight,
 } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { prisma as prismaClient } from "@/lib/prisma";
@@ -14,8 +14,8 @@ import { FavoriteButton } from "@/components/booking/favorite-button";
 
 const salonTypeLabels: Record<string, string> = {
   BARBER: "Barber",
-  HAIR_SALON: "Hair Salon",
-  BEAUTY_SALON: "Beauty Salon",
+  HAIR_SALON: "Salon coafură",
+  BEAUTY_SALON: "Salon beauty",
   UNISEX: "Unisex",
 };
 
@@ -59,37 +59,37 @@ export default async function SalonPage({
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-10">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-3">
               <h1 className="text-3xl font-bold text-neutral-900">{salon.name}</h1>
-              <Badge variant="outline">{salonTypeLabels[salon.type]}</Badge>
+              <Badge variant="outline" className="text-xs">{salonTypeLabels[salon.type]}</Badge>
             </div>
             {salon.description && (
-              <p className="mt-2 max-w-2xl text-neutral-500">{salon.description}</p>
+              <p className="mt-2 max-w-2xl leading-relaxed text-neutral-500">{salon.description}</p>
             )}
-            <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-neutral-500">
-              <span className="flex items-center gap-1">
-                <MapPin className="h-4 w-4" />
+            <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-neutral-500">
+              <span className="flex items-center gap-1.5">
+                <MapPin className="h-4 w-4 text-neutral-400" />
                 {salon.address}, {salon.city}
               </span>
               {salon.phone && (
-                <span className="flex items-center gap-1">
-                  <Phone className="h-4 w-4" />
+                <a href={`tel:${salon.phone}`} className="flex items-center gap-1.5 transition-colors hover:text-amber-600">
+                  <Phone className="h-4 w-4 text-neutral-400" />
                   {salon.phone}
-                </span>
+                </a>
               )}
               {salon.email && (
-                <span className="flex items-center gap-1">
-                  <Mail className="h-4 w-4" />
+                <a href={`mailto:${salon.email}`} className="flex items-center gap-1.5 transition-colors hover:text-amber-600">
+                  <Mail className="h-4 w-4 text-neutral-400" />
                   {salon.email}
-                </span>
+                </a>
               )}
             </div>
-            <div className="mt-2 flex items-center gap-1">
+            <div className="mt-3 flex items-center gap-1.5">
               <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-              <span className="text-sm font-medium">{salon.rating.toFixed(1)}</span>
+              <span className="text-sm font-semibold text-neutral-900">{salon.rating.toFixed(1)}</span>
               <span className="text-xs text-neutral-400">({salon.reviewCount} recenzii)</span>
             </div>
           </div>
@@ -107,26 +107,26 @@ export default async function SalonPage({
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Main content */}
-        <div className="lg:col-span-2 space-y-8">
+        <div className="lg:col-span-2 space-y-10">
           {/* Specialists */}
           <section>
-            <h2 className="mb-4 text-xl font-semibold text-neutral-900 flex items-center gap-2">
-              <Users className="h-5 w-5" />
+            <h2 className="mb-5 text-xl font-semibold text-neutral-900 flex items-center gap-2">
+              <Users className="h-5 w-5 text-amber-600" />
               Specialiști ({salon.specialists.length})
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {salon.specialists.map((spec) => (
                 <Link key={spec.id} href={`/specialists/${spec.id}`}>
-                  <Card className="group cursor-pointer transition-all hover:shadow-md h-full">
+                  <Card className="group h-full cursor-pointer transition-all hover:shadow-md hover:border-amber-200">
                     <CardContent className="p-5">
                       <div className="flex items-center gap-4">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-neutral-100 text-neutral-600 shrink-0">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 text-amber-700 shrink-0">
                           <span className="text-lg font-semibold">
                             {spec.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
                           </span>
                         </div>
                         <div className="min-w-0">
-                          <h3 className="font-semibold text-neutral-900 group-hover:text-neutral-700 truncate">
+                          <h3 className="font-semibold text-neutral-900 group-hover:text-amber-700 truncate transition-colors">
                             {spec.name}
                           </h3>
                           {spec.specialization && (
@@ -136,6 +136,7 @@ export default async function SalonPage({
                             {spec.services.length} servicii
                           </p>
                         </div>
+                        <ArrowRight className="ml-auto h-4 w-4 text-neutral-300 transition-all group-hover:text-amber-500 group-hover:translate-x-0.5" />
                       </div>
                     </CardContent>
                   </Card>
@@ -146,8 +147,8 @@ export default async function SalonPage({
 
           {/* Services */}
           <section>
-            <h2 className="mb-4 text-xl font-semibold text-neutral-900 flex items-center gap-2">
-              <Scissors className="h-5 w-5" />
+            <h2 className="mb-5 text-xl font-semibold text-neutral-900 flex items-center gap-2">
+              <Scissors className="h-5 w-5 text-amber-600" />
               Servicii ({salon.services.length})
             </h2>
             <Card>
@@ -155,7 +156,7 @@ export default async function SalonPage({
                 {salon.services.map((service) => (
                   <div
                     key={service.id}
-                    className="flex items-center justify-between px-5 py-4"
+                    className="flex items-center justify-between px-5 py-4 transition-colors hover:bg-amber-50/30"
                   >
                     <div>
                       <h3 className="font-medium text-neutral-900">{service.name}</h3>
@@ -167,7 +168,7 @@ export default async function SalonPage({
                         {formatDuration(service.duration)}
                       </div>
                     </div>
-                    <span className="text-lg font-semibold text-neutral-900 shrink-0 ml-4">
+                    <span className="text-lg font-semibold text-amber-700 shrink-0 ml-4">
                       {formatPrice(service.price)}
                     </span>
                   </div>
@@ -179,8 +180,8 @@ export default async function SalonPage({
           {/* Reviews */}
           {salon.reviews.length > 0 && (
             <section>
-              <h2 className="mb-4 text-xl font-semibold text-neutral-900 flex items-center gap-2">
-                <Star className="h-5 w-5" />
+              <h2 className="mb-5 text-xl font-semibold text-neutral-900 flex items-center gap-2">
+                <Star className="h-5 w-5 text-amber-600" />
                 Recenzii
               </h2>
               <div className="space-y-4">
@@ -203,7 +204,7 @@ export default async function SalonPage({
                         </div>
                       </div>
                       {review.comment && (
-                        <p className="mt-2 text-sm text-neutral-600">{review.comment}</p>
+                        <p className="mt-2 text-sm leading-relaxed text-neutral-600">{review.comment}</p>
                       )}
                     </CardContent>
                   </Card>
@@ -215,17 +216,17 @@ export default async function SalonPage({
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Working hours - show first specialist's schedule as representative */}
+          {/* Working hours */}
           {salon.specialists[0]?.workingHours.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
-                  <Clock className="h-4 w-4" />
+                  <Clock className="h-4 w-4 text-amber-600" />
                   Program orientativ
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   {[1, 2, 3, 4, 5, 6, 0].map((day) => {
                     const wh = salon.specialists[0].workingHours.find(
                       (h) => h.dayOfWeek === day
@@ -233,7 +234,7 @@ export default async function SalonPage({
                     return (
                       <div key={day} className="flex items-center justify-between text-sm">
                         <span className="text-neutral-600">{dayNames[day]}</span>
-                        <span className={wh?.isWorking ? "font-medium" : "text-neutral-400"}>
+                        <span className={wh?.isWorking ? "font-medium text-neutral-900" : "text-neutral-400"}>
                           {wh?.isWorking ? `${wh.startTime} - ${wh.endTime}` : "Închis"}
                         </span>
                       </div>
@@ -245,15 +246,17 @@ export default async function SalonPage({
           )}
 
           {/* Quick booking CTA */}
-          <Card className="bg-neutral-900 text-white">
+          <Card className="border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50">
             <CardContent className="p-6 text-center">
-              <Calendar className="mx-auto h-8 w-8 mb-3" />
-              <h3 className="text-lg font-semibold">Programare rapidă</h3>
-              <p className="mt-1 text-sm text-neutral-300">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-amber-100">
+                <Calendar className="h-6 w-6 text-amber-600" />
+              </div>
+              <h3 className="mt-3 text-lg font-semibold text-neutral-900">Programare rapidă</h3>
+              <p className="mt-1 text-sm text-neutral-500">
                 Alege specialist, serviciu și oră disponibilă.
               </p>
               <Link href={`/book/${salon.id}`}>
-                <Button className="mt-4 w-full bg-white text-neutral-900 hover:bg-neutral-100">
+                <Button className="mt-4 w-full">
                   Programează-te acum
                 </Button>
               </Link>

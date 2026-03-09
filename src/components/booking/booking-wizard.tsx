@@ -6,10 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import { formatPrice, formatDuration } from "@/lib/utils";
 import {
-  Calendar, Clock, User, Scissors, Check, Loader2, ArrowLeft, ArrowRight,
+  Calendar, Clock, User, Scissors, Check, Loader2, ArrowLeft, ArrowRight, CheckCircle,
 } from "lucide-react";
 
 type Specialist = {
@@ -143,19 +142,19 @@ export function BookingWizard({
 
   if (success) {
     return (
-      <Card>
+      <Card className="border-emerald-200">
         <CardContent className="py-16 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-100">
-            <Clock className="h-8 w-8 text-amber-600" />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50">
+            <CheckCircle className="h-8 w-8 text-emerald-600" />
           </div>
           <h2 className="mt-4 text-xl font-semibold text-neutral-900">
             Programare trimisă!
           </h2>
-          <p className="mt-2 text-neutral-500">
+          <p className="mx-auto mt-2 max-w-md text-neutral-500">
             Programarea ta la {salon.name} cu {specialist?.name} a fost trimisă și așteaptă confirmarea salonului.
             Vei primi o notificare când este confirmată.
           </p>
-          <div className="mt-4 inline-flex items-center gap-4 rounded-lg bg-neutral-50 px-6 py-3 text-sm">
+          <div className="mt-4 inline-flex items-center gap-4 rounded-xl bg-amber-50 px-6 py-3 text-sm">
             <span><strong>{selectedDate}</strong></span>
             <span><strong>{selectedTime}</strong></span>
             <span>{service?.name}</span>
@@ -185,9 +184,11 @@ export function BookingWizard({
         ].map((s) => (
           <div key={s.num} className="flex items-center gap-2">
             <div
-              className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium ${
-                step >= s.num
-                  ? "bg-neutral-900 text-white"
+              className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors ${
+                step > s.num
+                  ? "bg-emerald-100 text-emerald-700"
+                  : step === s.num
+                  ? "bg-amber-600 text-white"
                   : "bg-neutral-100 text-neutral-400"
               }`}
             >
@@ -204,7 +205,7 @@ export function BookingWizard({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <User className="h-5 w-5" />
+              <User className="h-5 w-5 text-amber-600" />
               Alege specialistul
             </CardTitle>
           </CardHeader>
@@ -217,22 +218,23 @@ export function BookingWizard({
                   setSelectedService("");
                   setStep(2);
                 }}
-                className={`w-full rounded-lg border p-4 text-left transition-all hover:border-neutral-400 ${
+                className={`w-full rounded-xl border p-4 text-left transition-all hover:border-amber-300 hover:bg-amber-50/50 ${
                   selectedSpecialist === spec.id
-                    ? "border-neutral-900 bg-neutral-50"
+                    ? "border-amber-400 bg-amber-50"
                     : "border-neutral-200"
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 text-sm font-semibold text-neutral-600">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-50 text-sm font-semibold text-amber-700">
                     {spec.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <p className="font-medium text-neutral-900">{spec.name}</p>
                     {spec.specialization && (
                       <p className="text-sm text-neutral-500">{spec.specialization}</p>
                     )}
                   </div>
+                  <ArrowRight className="h-4 w-4 text-neutral-300" />
                 </div>
               </button>
             ))}
@@ -245,7 +247,7 @@ export function BookingWizard({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Scissors className="h-5 w-5" />
+              <Scissors className="h-5 w-5 text-amber-600" />
               Alege serviciul
             </CardTitle>
           </CardHeader>
@@ -257,9 +259,9 @@ export function BookingWizard({
                   setSelectedService(svc.id);
                   setStep(3);
                 }}
-                className={`w-full rounded-lg border p-4 text-left transition-all hover:border-neutral-400 ${
+                className={`w-full rounded-xl border p-4 text-left transition-all hover:border-amber-300 hover:bg-amber-50/50 ${
                   selectedService === svc.id
-                    ? "border-neutral-900 bg-neutral-50"
+                    ? "border-amber-400 bg-amber-50"
                     : "border-neutral-200"
                 }`}
               >
@@ -274,7 +276,7 @@ export function BookingWizard({
                       {formatDuration(svc.duration)}
                     </div>
                   </div>
-                  <span className="text-lg font-semibold">{formatPrice(svc.price)}</span>
+                  <span className="text-lg font-semibold text-amber-700">{formatPrice(svc.price)}</span>
                 </div>
               </button>
             ))}
@@ -291,7 +293,7 @@ export function BookingWizard({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calendar className="h-5 w-5" />
+              <Calendar className="h-5 w-5 text-amber-600" />
               Alege data și ora
             </CardTitle>
           </CardHeader>
@@ -312,7 +314,7 @@ export function BookingWizard({
                 <Label>Oră disponibilă</Label>
                 {loadingSlots ? (
                   <div className="flex items-center gap-2 py-4 text-sm text-neutral-500">
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <Loader2 className="h-4 w-4 animate-spin text-amber-600" />
                     Se încarcă sloturile...
                   </div>
                 ) : slots.length > 0 ? (
@@ -326,8 +328,8 @@ export function BookingWizard({
                           !slot.available
                             ? "cursor-not-allowed border-neutral-100 bg-neutral-50 text-neutral-300 line-through"
                             : selectedTime === slot.time
-                            ? "border-neutral-900 bg-neutral-900 text-white"
-                            : "border-neutral-200 hover:border-neutral-400"
+                            ? "border-amber-400 bg-amber-600 text-white shadow-sm"
+                            : "border-neutral-200 hover:border-amber-300 hover:bg-amber-50"
                         }`}
                       >
                         {slot.time}
@@ -363,13 +365,13 @@ export function BookingWizard({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Check className="h-5 w-5" />
+              <Check className="h-5 w-5 text-amber-600" />
               Confirmă programarea
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Summary */}
-            <div className="rounded-lg bg-neutral-50 p-4 space-y-2 text-sm">
+            <div className="rounded-xl bg-amber-50/50 border border-amber-100 p-4 space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-neutral-500">Salon:</span>
                 <span className="font-medium">{salon.name}</span>
@@ -394,9 +396,9 @@ export function BookingWizard({
                 <span className="text-neutral-500">Durată:</span>
                 <span className="font-medium">{service ? formatDuration(service.duration) : ""}</span>
               </div>
-              <div className="flex justify-between border-t border-neutral-200 pt-2">
+              <div className="flex justify-between border-t border-amber-200/50 pt-2">
                 <span className="text-neutral-500">Preț:</span>
-                <span className="text-lg font-semibold">
+                <span className="text-lg font-semibold text-amber-700">
                   {service ? formatPrice(service.price) : ""}
                 </span>
               </div>
@@ -449,7 +451,7 @@ export function BookingWizard({
             </div>
 
             {error && (
-              <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</div>
+              <div className="rounded-lg bg-red-50 border border-red-100 p-3 text-sm text-red-600">{error}</div>
             )}
 
             <div className="flex gap-3">

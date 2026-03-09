@@ -10,8 +10,8 @@ import { FavoriteButton } from "@/components/booking/favorite-button";
 
 const salonTypeLabels: Record<string, string> = {
   BARBER: "Barber",
-  HAIR_SALON: "Hair Salon",
-  BEAUTY_SALON: "Beauty Salon",
+  HAIR_SALON: "Salon coafură",
+  BEAUTY_SALON: "Salon beauty",
   UNISEX: "Unisex",
 };
 
@@ -51,7 +51,7 @@ export default async function FavoritesPage() {
           <p className="mt-1 text-sm text-neutral-500">
             Apasă pe inimioară pe pagina unui salon pentru a-l salva.
           </p>
-          <Link href="/salons" className="mt-4 inline-block text-sm font-medium text-neutral-900 underline">
+          <Link href="/salons" className="mt-4 inline-block text-sm font-medium text-amber-600 hover:text-amber-700 underline">
             Explorează saloane
           </Link>
         </div>
@@ -64,7 +64,7 @@ export default async function FavoritesPage() {
                   <Link href={`/salons/${salon.slug}`}>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="font-semibold text-neutral-900 group-hover:text-neutral-700">
+                        <h3 className="font-semibold text-neutral-900 group-hover:text-amber-700">
                           {salon.name}
                         </h3>
                         <Badge variant="outline">{salonTypeLabels[salon.type]}</Badge>

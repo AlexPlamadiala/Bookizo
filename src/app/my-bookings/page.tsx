@@ -63,7 +63,7 @@ export default async function MyBookingsPage() {
           <p className="mt-1 text-sm text-neutral-500">
             Nu ai programări încă. Explorează saloanele și programează-te!
           </p>
-          <Link href="/salons" className="mt-4 inline-block text-sm font-medium text-neutral-900 underline">
+          <Link href="/salons" className="mt-4 inline-block text-sm font-medium text-amber-600 hover:text-amber-700 underline">
             Explorează saloane
           </Link>
         </div>

@@ -74,7 +74,7 @@ export function ImageUpload({
           />
           <button
             onClick={() => setPreview(null)}
-            className="absolute -right-1 -top-1 rounded-full bg-neutral-900 p-0.5 text-white"
+            className="absolute -right-1 -top-1 rounded-full bg-amber-600 p-0.5 text-white"
           >
             <X className="h-3 w-3" />
           </button>

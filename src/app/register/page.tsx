@@ -46,8 +46,8 @@ export default function RegisterPage() {
     <div className="flex min-h-[70vh] items-center justify-center px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-900 text-white">
-            <Scissors className="h-6 w-6" />
+          <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-amber-100">
+            <Scissors className="h-6 w-6 text-amber-700" />
           </div>
           <CardTitle className="text-xl">Înregistrare</CardTitle>
           <p className="text-sm text-neutral-500">Creează un cont Bookizo</p>
@@ -90,7 +90,9 @@ export default function RegisterPage() {
                 required
               />
             </div>
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {error && (
+              <p className="rounded-lg bg-red-50 border border-red-100 p-3 text-sm text-red-600">{error}</p>
+            )}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? (
                 <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Se creează...</>
@@ -101,7 +103,7 @@ export default function RegisterPage() {
           </form>
           <p className="mt-4 text-center text-sm text-neutral-500">
             Ai deja cont?{" "}
-            <Link href="/login" className="font-medium text-neutral-900 hover:underline">
+            <Link href="/login" className="font-medium text-amber-600 hover:text-amber-700 hover:underline">
               Conectează-te
             </Link>
           </p>

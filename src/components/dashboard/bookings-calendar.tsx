@@ -133,7 +133,7 @@ export function BookingsCalendar({ bookings }: { bookings: BookingItem[] }) {
                     isSelected ? "bg-neutral-100 ring-2 ring-neutral-900" : ""
                   } ${isToday ? "font-bold" : ""}`}
                 >
-                  <span className={`${isToday ? "flex h-6 w-6 items-center justify-center rounded-full bg-neutral-900 text-white text-xs mx-auto" : ""}`}>
+                  <span className={`${isToday ? "flex h-6 w-6 items-center justify-center rounded-full bg-amber-600 text-white text-xs mx-auto" : ""}`}>
                     {day}
                   </span>
                   {activeBookings.length > 0 && (

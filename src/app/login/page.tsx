@@ -41,8 +41,8 @@ export default function LoginPage() {
     <div className="flex min-h-[70vh] items-center justify-center px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-900 text-white">
-            <Scissors className="h-6 w-6" />
+          <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-amber-100">
+            <Scissors className="h-6 w-6 text-amber-700" />
           </div>
           <CardTitle className="text-xl">Conectare</CardTitle>
           <p className="text-sm text-neutral-500">
@@ -76,7 +76,7 @@ export default function LoginPage() {
               />
             </div>
             {error && (
-              <p className="text-sm text-red-600">{error}</p>
+              <p className="rounded-lg bg-red-50 border border-red-100 p-3 text-sm text-red-600">{error}</p>
             )}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? (
@@ -88,12 +88,12 @@ export default function LoginPage() {
           </form>
           <p className="mt-4 text-center text-sm text-neutral-500">
             Nu ai cont?{" "}
-            <Link href="/register" className="font-medium text-neutral-900 hover:underline">
+            <Link href="/register" className="font-medium text-amber-600 hover:text-amber-700 hover:underline">
               Înregistrează-te
             </Link>
           </p>
-          <div className="mt-4 rounded-lg bg-neutral-50 p-3 text-xs text-neutral-500">
-            <p className="font-medium mb-1">Conturi demo (parolă: password123):</p>
+          <div className="mt-4 rounded-xl bg-amber-50/50 border border-amber-100 p-3 text-xs text-neutral-500">
+            <p className="font-medium text-neutral-700 mb-1">Conturi demo (parolă: password123):</p>
             <p>Super Admin: superadmin@bookizo.ro</p>
             <p>Partener: admin@bookizo.ro</p>
             <p>Client: client@bookizo.ro</p>

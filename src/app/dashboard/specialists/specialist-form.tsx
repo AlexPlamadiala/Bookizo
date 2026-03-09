@@ -102,7 +102,7 @@ export function SpecialistForm({
                   }
                   className={`rounded-full border px-3 py-1 text-sm transition-colors ${
                     selectedServices.includes(s.id)
-                      ? "border-neutral-900 bg-neutral-900 text-white"
+                      ? "border-amber-600 bg-amber-600 text-white"
                       : "border-neutral-200 hover:border-neutral-400"
                   }`}
                 >

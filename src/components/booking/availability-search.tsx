@@ -260,7 +260,7 @@ export function AvailabilitySearch({
                                 key={slot}
                                 href={`/book/${salon.salonId}?specialist=${spec.specialistId}&service=${spec.serviceId}`}
                               >
-                                <button className="rounded-lg border border-neutral-200 px-3 py-1.5 text-sm font-medium transition-all hover:border-neutral-900 hover:bg-neutral-900 hover:text-white">
+                                <button className="rounded-lg border border-neutral-200 px-3 py-1.5 text-sm font-medium transition-all hover:border-amber-600 hover:bg-amber-600 hover:text-white">
                                   {slot}
                                 </button>
                               </Link>

@@ -66,8 +66,8 @@ export default async function DashboardPage() {
           <Card key={stat.label}>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-neutral-100">
-                  <stat.icon className="h-5 w-5 text-neutral-600" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50">
+                  <stat.icon className="h-5 w-5 text-amber-600" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{stat.value}</p>

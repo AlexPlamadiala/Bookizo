@@ -107,9 +107,9 @@ export default function NotificationsPage() {
               <CardContent className="p-4">
                 <div className="flex items-start gap-3">
                   <div className={`mt-0.5 flex h-8 w-8 items-center justify-center rounded-full shrink-0 ${
-                    n.isRead ? "bg-neutral-100" : "bg-neutral-900"
+                    n.isRead ? "bg-neutral-100" : "bg-amber-100"
                   }`}>
-                    <Bell className={`h-4 w-4 ${n.isRead ? "text-neutral-400" : "text-white"}`} />
+                    <Bell className={`h-4 w-4 ${n.isRead ? "text-neutral-400" : "text-amber-600"}`} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
