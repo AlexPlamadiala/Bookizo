@@ -4,8 +4,9 @@ import { prisma } from "@/lib/prisma";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice, formatDuration } from "@/lib/utils";
-import { Calendar, MapPin, Clock, User } from "lucide-react";
+import { Calendar, MapPin, Clock, User, Download } from "lucide-react";
 import Link from "next/link";
+import { ReviewForm } from "@/components/booking/review-form";
 
 const statusLabels: Record<string, string> = {
   PENDING: "În așteptare",
@@ -34,6 +35,7 @@ export default async function MyBookingsPage() {
       salon: true,
       specialist: true,
       service: true,
+      review: true,
     },
     orderBy: [{ date: "desc" }, { startTime: "desc" }],
   });
@@ -120,6 +122,15 @@ export default async function MyBookingsPage() {
                           <p className="mt-1 text-lg font-bold text-neutral-900">
                             {formatPrice(booking.service.price)}
                           </p>
+                          {booking.status === "CONFIRMED" && (
+                            <a
+                              href={`/api/calendar/export?bookingId=${booking.id}&salon=${encodeURIComponent(booking.salon.name)}&specialist=${encodeURIComponent(booking.specialist.name)}&service=${encodeURIComponent(booking.service.name)}&date=${booking.date.toISOString().split("T")[0]}&startTime=${booking.startTime}&endTime=${booking.endTime}&address=${encodeURIComponent(booking.salon.address + ", " + booking.salon.city)}`}
+                              className="mt-2 inline-flex items-center gap-1 rounded-lg border border-neutral-200 px-2 py-1 text-xs text-neutral-600 hover:bg-neutral-50"
+                            >
+                              <Download className="h-3 w-3" />
+                              Calendar
+                            </a>
+                          )}
                         </div>
                       </div>
                     </CardContent>
@@ -135,7 +146,7 @@ export default async function MyBookingsPage() {
               <h2 className="text-lg font-semibold text-neutral-900">Anterioare</h2>
               <div className="mt-3 space-y-3">
                 {past.map((booking) => (
-                  <Card key={booking.id} className="opacity-70">
+                  <Card key={booking.id} className={booking.status === "COMPLETED" && !booking.review ? "" : "opacity-70"}>
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between">
                         <div>
@@ -157,6 +168,27 @@ export default async function MyBookingsPage() {
                           {formatPrice(booking.service.price)}
                         </span>
                       </div>
+                      {/* Review form for completed bookings */}
+                      {booking.status === "COMPLETED" && !booking.review && (
+                        <div className="mt-4 border-t pt-4">
+                          <ReviewForm
+                            bookingId={booking.id}
+                            salonName={booking.salon.name}
+                          />
+                        </div>
+                      )}
+                      {booking.review && (
+                        <div className="mt-3 rounded-lg bg-neutral-50 p-3 text-sm">
+                          <div className="flex items-center gap-1">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <span key={i} className={i < booking.review!.rating ? "text-amber-400" : "text-neutral-300"}>★</span>
+                            ))}
+                          </div>
+                          {booking.review.comment && (
+                            <p className="mt-1 text-neutral-600">{booking.review.comment}</p>
+                          )}
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 ))}

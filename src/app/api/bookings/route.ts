@@ -4,6 +4,7 @@ import { bookingSchema } from "@/lib/validations";
 import { addMinutesToTime } from "@/lib/booking";
 import { getAvailableSlots } from "@/lib/booking";
 import { auth } from "@/lib/auth";
+import { sendNewBookingEmail } from "@/lib/email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -78,6 +79,18 @@ export async function POST(request: NextRequest) {
           message: `${customerName} dorește o programare pe ${date} la ora ${time}.`,
         })),
       });
+
+      // Send email to admins (non-blocking)
+      for (const admin of salonAdmins) {
+        if (admin.email) {
+          sendNewBookingEmail(admin.email, {
+            customerName,
+            serviceName: service.name,
+            date,
+            time,
+          }).catch(() => {});
+        }
+      }
     }
 
     return NextResponse.json({ booking }, { status: 201 });

@@ -8,6 +8,9 @@ import { formatPrice, formatDuration } from "@/lib/utils";
 import {
   MapPin, Phone, Mail, Star, Clock, Users, Scissors, Calendar,
 } from "lucide-react";
+import { auth } from "@/lib/auth";
+import { prisma as prismaClient } from "@/lib/prisma";
+import { FavoriteButton } from "@/components/booking/favorite-button";
 
 const salonTypeLabels: Record<string, string> = {
   BARBER: "Barber",
@@ -42,8 +45,16 @@ export default async function SalonPage({
 }) {
   const { slug } = await params;
   const salon = await getSalon(slug);
-
   if (!salon) notFound();
+
+  const session = await auth();
+  let isFavorited = false;
+  if (session?.user?.id) {
+    const fav = await prismaClient.favorite.findUnique({
+      where: { userId_salonId: { userId: session.user.id as string, salonId: salon.id } },
+    });
+    isFavorited = !!fav;
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -82,12 +93,15 @@ export default async function SalonPage({
               <span className="text-xs text-neutral-400">({salon.reviewCount} recenzii)</span>
             </div>
           </div>
-          <Link href={`/book/${salon.id}`}>
-            <Button size="lg">
-              <Calendar className="mr-2 h-4 w-4" />
-              Programează-te
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            {session && <FavoriteButton salonId={salon.id} initialFavorited={isFavorited} />}
+            <Link href={`/book/${salon.id}`}>
+              <Button size="lg">
+                <Calendar className="mr-2 h-4 w-4" />
+                Programează-te
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
 

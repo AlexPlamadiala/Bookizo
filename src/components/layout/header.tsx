@@ -12,6 +12,7 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const isAdmin = session?.user?.role === "SALON_ADMIN" || session?.user?.role === "SUPER_ADMIN";
+  const isSuperAdmin = session?.user?.role === "SUPER_ADMIN";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -33,11 +34,19 @@ export function Header() {
               Dashboard
             </Link>
           )}
+          {isSuperAdmin && (
+            <Link href="/admin" className="text-sm font-medium text-red-600 hover:text-red-700 transition-colors">
+              Admin
+            </Link>
+          )}
           {session ? (
             <div className="flex items-center gap-3">
               <NotificationBell />
               <Link href="/my-bookings" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">
                 Programările mele
+              </Link>
+              <Link href="/favorites" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">
+                Favorite
               </Link>
               <span className="text-sm text-neutral-500">{session.user?.name || session.user?.email}</span>
               <Button variant="outline" size="sm" onClick={() => signOut()}>
@@ -73,6 +82,11 @@ export function Header() {
             {isAdmin && (
               <Link href="/dashboard" className="text-sm font-medium text-neutral-600" onClick={() => setMobileOpen(false)}>
                 Dashboard
+              </Link>
+            )}
+            {isSuperAdmin && (
+              <Link href="/admin" className="text-sm font-medium text-red-600" onClick={() => setMobileOpen(false)}>
+                Admin Panel
               </Link>
             )}
             {session ? (
