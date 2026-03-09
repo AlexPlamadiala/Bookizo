@@ -11,13 +11,18 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
+          "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/50 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.97] cursor-pointer",
           {
-            "bg-amber-600 text-white shadow-sm hover:bg-amber-700 hover:shadow-md": variant === "default",
-            "border border-neutral-200 bg-white text-neutral-700 shadow-sm hover:bg-neutral-50 hover:border-neutral-300 hover:text-neutral-900": variant === "outline",
-            "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900": variant === "ghost",
-            "bg-red-600 text-white shadow-sm hover:bg-red-700 hover:shadow-md": variant === "destructive",
-            "text-neutral-900 underline-offset-4 hover:underline": variant === "link",
+            "bg-amber-600 text-white shadow-md shadow-amber-600/20 hover:bg-amber-500 hover:shadow-lg hover:shadow-amber-500/25 hover:-translate-y-0.5":
+              variant === "default",
+            "border border-neutral-200 bg-white text-neutral-600 shadow-sm hover:border-amber-200 hover:bg-amber-50/50 hover:text-amber-700 hover:shadow-md hover:-translate-y-0.5":
+              variant === "outline",
+            "text-neutral-500 hover:bg-amber-50 hover:text-amber-700":
+              variant === "ghost",
+            "bg-red-600 text-white shadow-md shadow-red-600/20 hover:bg-red-500 hover:shadow-lg hover:shadow-red-500/25 hover:-translate-y-0.5":
+              variant === "destructive",
+            "text-amber-600 underline-offset-4 hover:underline hover:text-amber-700":
+              variant === "link",
           },
           {
             "h-10 px-5 py-2": size === "default",
