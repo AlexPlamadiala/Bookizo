@@ -53,7 +53,7 @@ export default async function HomePage() {
                 </Button>
               </Link>
               <Link href="/search">
-                <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10">
+                <Button size="lg" className="border border-white/30 bg-transparent text-white hover:bg-white/10">
                   <Search className="mr-2 h-4 w-4" />
                   Caută după disponibilitate
                 </Button>
