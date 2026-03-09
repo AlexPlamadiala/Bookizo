@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { sendBookingConfirmationEmail } from "@/lib/email";
 
 export async function PATCH(
   request: NextRequest,
@@ -55,6 +56,19 @@ export async function PATCH(
         },
       });
     }
+  }
+
+  // Send email notification (non-blocking)
+  if (status === "CONFIRMED" || status === "CANCELLED") {
+    sendBookingConfirmationEmail(booking.customerEmail, {
+      customerName: booking.customerName,
+      salonName: booking.salon.name,
+      specialistName: booking.specialist.name,
+      serviceName: booking.service.name,
+      date: booking.date.toLocaleDateString("ro-RO"),
+      time: booking.startTime,
+      status,
+    }).catch(() => {}); // Don't block on email failure
   }
 
   return NextResponse.json({ booking });

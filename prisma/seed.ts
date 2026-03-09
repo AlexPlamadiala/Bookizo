@@ -7,6 +7,9 @@ async function main() {
   console.log("🌱 Seeding database...");
 
   // Clean existing data
+  await prisma.pushSubscription.deleteMany();
+  await prisma.recurringBooking.deleteMany();
+  await prisma.favorite.deleteMany();
   await prisma.notification.deleteMany();
   await prisma.booking.deleteMany();
   await prisma.workingHours.deleteMany();
